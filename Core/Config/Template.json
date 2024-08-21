@@ -1,0 +1,11 @@
+
+{
+    "default": {
+        "src": "Template/Layout.html",
+        "templates": 
+        {
+            "admin": "Admin/Template/Layout.html"
+        }
+    }
+}
+  

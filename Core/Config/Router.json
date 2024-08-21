@@ -1,0 +1,100 @@
+{
+    "/": {
+        "controller": "Homes",
+        "action": "index",
+        "logged": false,
+        "title": null,
+        "rangs": null,
+        "template": null
+    },
+    "/admin": {
+        "controller": "Admins",
+        "action": "index",
+        "logged": false,
+        "title": null,
+        "rangs": null,
+        "template": "admin"
+    }, 
+    "/admin/forms": {
+        "controller": "Forms",
+        "action": "index",
+        "logged": false,
+        "title": null,
+        "rangs": null,
+        "template": "admin"
+    }, 
+    "/admin/forms/add": {
+        "controller": "Forms",
+        "action": "Add",
+        "logged": false,
+        "title": null,
+        "rangs": null,
+        "template": "admin"
+    }, 
+    "/admin/form/add": {
+        "controller": "Forms",
+        "action": "Record",
+        "logged": false,
+        "title": null,
+        "rangs": null,
+        "template": "admin"
+    }, 
+    "/admin/form/manage": {
+        "controller": "Forms",
+        "action": "Manage",
+        "logged": false,
+        "title": null,
+        "rangs": null,
+        "template": "admin"
+    }, 
+    "/admin/form/relation": {
+        "controller": "Forms",
+        "action": "Relation",
+        "logged": false,
+        "title": null,
+        "rangs": null,
+        "template": "admin"
+    }, 
+    "/admin/form/remove": {
+        "controller": "Forms",
+        "action": "remove",
+        "logged": false,
+        "title": null,
+        "rangs": null,
+        "template": "admin"
+    }, 
+    "/admin/form/view": {
+        "controller": "Forms",
+        "action": "View",
+        "logged": false,
+        "title": null,
+        "rangs": null,
+        "template": "admin"
+    }, 
+    "/admin/form/record/edit": {
+        "controller": "Forms",
+        "action": "Edit",
+        "logged": false,
+        "title": null,
+        "rangs": null,
+        "template": "admin"
+    }, 
+    "/admin/form/record/remove": {
+        "controller": "Forms",
+        "action": "Delete",
+        "logged": false,
+        "title": null,
+        "rangs": null,
+        "template": "admin"
+    }, 
+    "/logout": {
+        "controller": "Users",
+        "action": "Logout",
+        "logged": true,
+        "title": null, 
+        "rangs": null,
+        "template": null
+    }
+   
+    
+}

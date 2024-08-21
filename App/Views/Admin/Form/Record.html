@@ -1,0 +1,32 @@
+<div class="p-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+      <h1 class="h3">Dashboard</h1>
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            
+        </div>
+      </div>
+    </div>
+
+    <form action="" method="post" id="form">
+        
+        {% for field in fields %}
+            <div class="mb-3">
+
+                <label for="table_name" class="form-label">{{ field.name }}</label>
+                {% if relations[field.db_name]  %}
+                  <select class="form-select" name="{{ field.db_name }}" > 
+                    {% for relation in relations[field.db_name] %}
+                      <option value="{{ relation.relation_value}}">{{ relation.relation_title }}</option>
+                    {% endfor %}
+                  </select>
+                {% else %}
+                  <input type="text" class="form-control" id="table_name" name="{{ field.db_name }}" >
+                {% endif %}
+                
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary">Dodaj rekord</button>
+    </form>
+    

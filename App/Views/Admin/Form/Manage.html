@@ -1,0 +1,139 @@
+<div class="p-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+      <h1 class="h3">Dashboard</h1>
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a href="#" class="btn btn-sm btn-outline-primary" id="add_column">Dodaj nowe Kolumne</a>
+            <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="collapse" data-bs-target="#confirmDeleteCollapse">Usuń</a>
+        </div>
+      </div>
+    </div>
+
+
+    <form action="" method="post" id="form">
+
+        <div class="collapse" id="confirmDeleteCollapse">
+            <div class="alert alert-danger  fade show" role="alert">
+              Czy na pewno chcesz usunąć ten formularz?
+             
+              <div class="pt-2">
+              
+                <a href="{{app.url}}/admin/form/remove/{{app.get.id}}" class="btn btn-sm btn-danger">Usuń tabele</a>
+                <a href="{{app.url}}/admin/form/truncate/{{app.get.id}}" class="btn btn-sm btn-danger">Opróznij tabele</a>
+                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="collapse" data-bs-target="#confirmDeleteCollapse" aria-expanded="false" aria-controls="confirmDeleteCollapse">Anuluj</button>
+              </div>
+            </div>
+        </div>    
+
+        <div class="mb-3">
+            <label for="form_name" class="form-label">Nazwa formularza</label>
+            <input type="text" class="form-control" id="form_name" value="{{ form.name }}" name="form_name" required>
+        </div>
+        <div class="mb-3">
+            <label for="table_name" class="form-label">Nazwa tabeli</label>
+            <input type="text" class="form-control" value="{{ form.table_name }}"  id="table_name" name="name" required>
+        </div>
+
+        
+          
+        
+          
+
+        
+
+        <h3>Kolumny w bazie danych</h3>
+       
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nazwa pola</th>
+                    <th>Nazwa w bazie</th>
+                    <th>Typ pola</th>
+                    <th>Długość</th>
+                    <th>Dodatkowe</th>
+                </tr>
+            </thead>
+            <tbody id="kolumny">
+                {% for field in fields %}
+                {% if field.name != 'id' %}
+    
+                <tr>
+                    <td><input type="text" value="{{ field.name }}" name="columns[{{ loop.index0 }}][name]" class="form-control"></td>
+                    <td><input type="text" value="{{ field.db_name }}" name="columns[{{ loop.index0 }}][db_name]" class="form-control"></td>
+                    <td>
+                        <select name="columns[{{ loop.index0 }}][type]" class="form-select">
+                            <option value="INT" {% if field.column_type == 'INT' %}selected{% endif %}>INT</option>
+                            <option value="VARCHAR" {% if field.column_type == 'VARCHAR' %}selected{% endif %}>VARCHAR</option>
+                            <option value="TEXT" {% if field.column_type == 'TEXT' %}selected{% endif %}>TEXT</option>
+                            <option value="DATE" {% if field.column_type == 'DATE' %}selected{% endif %}>DATE</option>
+                            <option value="TIME" {% if field.column_type == 'TIME' %}selected{% endif %}>TIME</option>
+                            <option value="DATETIME" {% if field.column_type == 'DATETIME' %}selected{% endif %}>DATETIME</option>
+                            <option value="FLOAT" {% if field.column_type == 'FLOAT' %}selected{% endif %}>FLOAT</option>
+                            <option value="DECIMAL" {% if field.column_type == 'DECIMAL' %}selected{% endif %}>DECIMAL</option>
+                            <option value="BOOLEAN" {% if field.column_type == 'BOOLEAN' %}selected{% endif %}>BOOLEAN</option>
+                            <option value="ENUM" {% if field.column_type == 'ENUM' %}selected{% endif %}>ENUM</option>
+                            <option value="BLOB" {% if field.column_type == 'BLOB' %}selected{% endif %}>BLOB</option>
+                            <option value="JSON" {% if field.column_type == 'JSON' %}selected{% endif %}>JSON</option>
+                        </select>
+                        
+                    </td>
+                    <td><input type="text" value="{{ field.column_length }}"  class="form-control" name="columns[{{ loop.index0 }}][length]"></td>
+                    <td>  
+                        {% set options = field.column_options | split(',') %}
+                        <select name="columns[{{ loop.index0 }}][options][]" multiple class="select">
+                            <option value="null" {% if 'null' in options %}selected{% endif %}>null</option>
+                          </select>
+                        <input type="hidden" value="{{ field.id }}" name="columns[{{ loop.index0 }}][id]" class="form-control">
+                    </td>
+                    <td> 
+                        <div class="btn-group me-2">
+                            
+                            <a href="{{app.url}}/admin/form/relation/{{ field.id }}" class="btn btn-outline-primary ">Zarzadzaj</a>
+                          
+                        </div>
+                        
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}     
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Edytuj</button>
+    </form>
+
+    <script>
+    $(document).ready(function() {
+        $('.select').selectpicker();    
+        $("#kolumny").on("click", ".remove", function(e) {
+        e.preventDefault(); // Prevent the default action of the link
+        $(this).closest('tr').remove(); // Remove the closest <tr> parent
+    });
+    $("#add_column").click(function(e) {
+        e.preventDefault(); // Prevent the default action of the link
+        const index = $("#kolumny tr").length + 1; // Get the current number of rows to use as index
+        $("#kolumny").append(`
+            <tr>
+                <td><input type="text" name="columns[${index}][name]" class="form-control"></td>
+                <td><input type="text" name="columns[${index}][db_name]" class="form-control"></td>
+                <td>
+                    <select name="columns[${index}][type]" class="form-select">
+                        <option value="INT">INT</option>
+                        <option value="VARCHAR">VARCHAR</option>
+                        <option value="TEXT">TEXT</option>
+                    </select>
+                </td>
+                <td><input type="text" class="form-control" name="columns[${index}][length]"></td>
+                <td>  
+                    <select name="columns[${index}][options][]" multiple class="select">
+                        <option value="null">null</option>
+                        <option value="primary">primary</option>
+                        <option value="auto_increment">auto increment</option>
+                    </select>
+                </td>
+                <td><a href="#" class="btn btn-outline-danger remove">Usuń</a></td>
+            </tr>
+        `);
+        $('.select').selectpicker();
+    });
+});
+    </script>

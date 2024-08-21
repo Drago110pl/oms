@@ -1,0 +1,37 @@
+{
+    "270": {
+        "header": "Blad 270",
+        "title": "Blad 270",
+        "description": "Dostęp do tej podstrony wymaga zalogowania"
+    },
+    "280": {
+        "header": "Blad 280",
+        "title": "Blad 280",
+        "description": "Brak uprawnien do tej strony"
+    },
+    "404": {
+        "header": "Blad 404",
+        "title": "Blad 404",
+        "description": "Strona, której szukasz, nie została odnaleziona."
+    },
+    "1090": {
+        "header": "Blad 1090",
+        "title": "Blad 1090",
+        "description": "Action method does not exist"
+    },
+    "1070": {
+        "header": "Blad 1070",
+        "title": "Blad 1070",
+        "description": "template file does not exist"
+    },
+    "1080": { 
+        "header": "Blad 1080",
+        "title": "Blad 1080",
+        "description": "Controller class does not exist."
+    },
+    "920": { 
+        "header": "Wylogowano",
+        "title": "Wylogowano",
+        "description": "Do następnego :)"
+    }
+}

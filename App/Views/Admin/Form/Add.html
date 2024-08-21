@@ -1,0 +1,73 @@
+<div class="p-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+      <h1 class="h3">Dashboard</h1>
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a href="#" class="btn btn-outline-primary btn-sm " id="add_column">Dodaj nowe Kolumne</a>
+        </div>
+      </div>
+    </div>
+
+
+    <form action="" method="post" id="form">
+        <div class="mb-3">
+            <label for="form_name" class="form-label">Nazwa formularza</label>
+            <input type="text" class="form-control" id="form_name" name="form_name" required>
+        </div>
+        <div class="mb-3">
+            <label for="table_name" class="form-label">Nazwa tabeli</label>
+            <input type="text" class="form-control" id="table_name" name="name" required>
+        </div>
+
+        <h3>Kolumny w bazie danych</h3>
+       
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nazwa pola</th>
+                    <th>Nazwa w bazie</th>
+                    <th>Typ pola</th>
+                    <th>Długość</th>
+                    <th>Dodatkowe</th>
+                </tr>
+              
+            </thead>
+            <tbody id="kolumny"></tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Dodaj formularz</button>
+    </form>
+
+    <script>
+    $(document).ready(function() {
+    $("#add_column").click(function(e) {
+        e.preventDefault(); // Prevent the default action of the link
+        const index = $("#kolumny tr").length; // Get the current number of rows to use as index
+        $("#kolumny").append(`
+            <tr>
+                <td><input type="text" name="columns[${index}][name]" class="form-control"></td>
+                <td><input type="text" name="columns[${index}][db_name]" class="form-control"></td>
+                <td>
+                    <select name="columns[${index}][type]" class="form-select">
+                        <option value="INT">INT</option>
+                        <option value="VARCHAR">VARCHAR</option>
+                        <option value="TEXT">TEXT</option>
+                    </select>
+                </td>
+                <td><input type="text" class="form-control" name="columns[${index}][length]"></td>
+                <td>  
+                    <select name="columns[${index}][options][]" multiple class="select">
+                        <option value="null">null</option>
+                   
+                    </select>
+                </td>
+                <td><a href="#" class="btn btn-outline-danger remove">Usuń</a></td>
+            </tr>
+        `);
+        $('.select').selectpicker();
+    });
+    $("#kolumny").on("click", ".remove", function(e) {
+        e.preventDefault(); // Prevent the default action of the link
+        $(this).closest('tr').remove(); // Remove the closest <tr> parent
+    });
+});
+    </script>

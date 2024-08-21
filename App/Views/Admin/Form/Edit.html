@@ -1,0 +1,46 @@
+<div class="p-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+      <h1 class="h3">Dashboard</h1>
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+          <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="collapse" data-bs-target="#confirmDeleteCollapse">Usuń</a>
+          
+        </div>
+      </div>
+    </div>
+    <div class="collapse" id="confirmDeleteCollapse">
+      <div class="alert alert-danger  fade show" role="alert">
+        Czy na pewno chcesz usunąć ten rekord?
+       
+        <div class="pt-2">
+        
+          <a href="{{app.url}}/admin/form/record/edit/{{app.get.0}}/{{row.id}}" class="btn btn-sm btn-danger">Usuń</a>
+          
+          <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="collapse" data-bs-target="#confirmDeleteCollapse" aria-expanded="false" aria-controls="confirmDeleteCollapse">Anuluj</button>
+        </div>
+      </div>
+  </div>   
+    <form action="" method="post" id="form">
+        
+        {% for field in fields %}
+            <div class="mb-3">
+
+              <label for="table_name" class="form-label">{{ field.name }}</label>
+              {% if relations[field.db_name]  %}
+                <select class="form-select" name="{{ field.db_name }}" >
+                  {% for relation in relations[field.db_name] %}
+                    <option {% if relation.relation_value == row[field.db_name] %}selected{% endif %} value="{{ relation.relation_value}}">{{ relation.relation_title }}</option>
+                  {% endfor %}
+                </select>
+              {% else %}
+                <input type="text" class="form-control" value="{{ row[field.db_name] }}" id="table_name" name="{{ field.db_name }}" >
+                
+              {% endif %}
+               
+                
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary"> Edytuj </button>
+    </form>
+    

@@ -1,0 +1,150 @@
+<div class="p-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+      <h1 class="h3">{{form.name}}</h1>
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+          <a href="{{app.url}}/admin/form/add/{{app.get.0}}" class="btn btn-sm btn-outline-primary">Dodaj nowy rekord</a>
+         
+          <a href="{{app.url}}/admin/form/manage/{{app.get.0}}" class="btn btn-sm btn-outline-secondary">Zarzadzaj</a>
+        </div>
+      </div>
+    </div>
+    <form method="get" action="{{app.url}}/admin/form/view/{{app.get.0}}/1/">
+    <div class="row g-3">
+        
+        <div class="col-2">
+            <select name="search_field" class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                {% for field in fields %}
+                    <option value="{{ field.db_name}}">{{ field.name }}</option>
+                {% endfor %}  
+            </select>
+        </div>
+        <div class="col-2">
+            <select name="search_operator" class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                <option>=</option>
+                <option>></option> 
+                <option><</option>
+                <option>>=</option>
+                <option><=</option>
+                <option><></option>
+                <option>LIKE</option>
+                <option>IN</option>
+                <option>NOT IN</option>
+                <option>IS NULL</option>
+            </select>
+        </div>
+        <div class="col-6">
+            <input name="search_term" type="text" class="form-control" aria-label="Text input with segmented dropdown button">
+        </div>
+       
+        <div class="col-2">
+          
+            <button  class="btn btn-outline-secondary w-100"  type="submit">Wyszukaj</button>
+        </div>
+      </div>
+    </form>
+
+    <form method="post" action="">
+        <table class="table ">
+            <tr>
+                <th width="20px"></th>
+                {% for field in fields %}
+                {% set sortType = 'ASC' %}
+                {% if app.get.sort == field.db_name and app.get.sort_type == 'ASC' %}
+                    {% set sortType = 'DESC' %}
+                {% endif %}
+                    <th>
+                        <a href="{{ app.url }}/admin/form/view/{{ app.get.0 }}/{{rows.currentPage}}/?sort={{ field.db_name }}&sort_type={{ sortType }}">
+                            {{ field.name }}
+                        </a>
+                    </th>
+                {% endfor %}
+                <th></th>
+            </tr>
+            <tbody>
+            {% for row in rows.items %}
+                <tr>
+                    <td> <input type="checkbox" class="form-check-input row-checkbox" name="checked[{{row.id}}]"> </td>
+                    {% for value in row %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                    <td align="right"> 
+                        {{ zmienna|raw  }}
+                         {% for menu in forms_view_menu %} 
+                            <a href="{{ include(template_from_string(menu.menu_path)) }}" class="btn btn-sm btn-outline-primary">{{menu.menu_name}}</a>
+                         {% endfor %}
+                         <a href="{{app.url}}/admin/form/record/edit/{{app.get.0}}/{{row.id}}" class="btn btn-sm btn-outline-primary">Edycja</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="d-flex align-items-center my-3">
+            <div class="form-check me-auto">
+                <input class="form-check-input" type="checkbox" id="select-all">
+                <label class="form-check-label" for="select-all">
+                    Zaznacz wszystko
+                </label>
+            </div>
+            <button type="submit" class="btn btn-sm btn-outline-secondary">Usuń</button>
+        </div>
+        </form>
+   
+        {% if app.get.2 %}
+        {% set endpar = app.get.2|raw %}
+        {% else %}
+        {% set endpar = '' %}
+        {% endif %}
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item {% if rows.currentPage <= 1 %}disabled{% endif %}">
+                    <a class="page-link" href="{{app.url}}/admin/form/view/{{app.get.0}}/{{ rows.currentPage - 1 }}/{{endpar|raw}}" tabindex="-1" aria-disabled="true">Previous</a>
+                </li>
+                {% if rows.startPage > 1 %}
+                    <li class="page-item">
+                        
+                        <a class="page-link" href="{{app.url}}/admin/form/view/{{app.get.0}}/1/{{endpar|raw}}">1</a>
+                    </li>
+                    {% if rows.startPage > 2 %}
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    {% endif %}
+                {% endif %}
+        
+                {% for i in rows.startPage..rows.endPage %}
+                    <li class="page-item {% if i == rows.currentPage %}active{% endif %}">
+                       
+                            <a class="page-link" href="{{app.url}}/admin/form/view/{{app.get.0}}/{{ i }}/{{endpar|raw}}">{{ i }}</a>
+                       
+                        
+                    </li>
+                {% endfor %}
+        
+                {% if rows.endPage < rows.totalPages %}
+                    {% if rows.endPage < rows.totalPages - 1 %}
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    {% endif %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{app.url}}/admin/form/view/{{app.get.0}}/{{ rows.totalPages }}/{{endpar|raw}}">{{ rows.totalPages }}</a>
+                    </li>
+                {% endif %}
+        
+                <li class="page-item {% if rows.currentPage >= rows.totalPages %}disabled{% endif %}">
+                    <a class="page-link" href="{{app.url}}/admin/form/view/{{app.get.0}}/{{ rows.currentPage + 1 }}/{{endpar|raw}}">Next</a>
+                </li>
+            </ul>
+        </nav>
+        
+
+        <script>
+            $(document).ready(function() {
+                $('#select-all').click(function() {
+                    $('.row-checkbox').prop('checked', this.checked);
+                });
+            });
+        </script>
