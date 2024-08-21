@@ -17,7 +17,7 @@ class Config
         'database' => [
             'host' => '127.0.0.1',
             'username' => 'omsuser',
-            'password' => '/H0I6XU)N]f*N*BQ',
+            'password' => '',
             'name' => 'oms',
         ],
         'website' => [
